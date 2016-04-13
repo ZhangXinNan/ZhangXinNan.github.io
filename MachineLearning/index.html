@@ -3,6 +3,18 @@
   <head>
       <meta charset="utf-8" />
       <title>index</title>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    extensions: [],
+    TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+    },
+    showMathMenu: false
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+</script>
       <style>.markdown-preview:not([data-use-github-style]) { padding: 2em; font-size: 1.2em; color: rgb(171, 178, 191); overflow: auto; background-color: rgb(40, 44, 52); }
 .markdown-preview:not([data-use-github-style]) > :first-child { margin-top: 0px; }
 .markdown-preview:not([data-use-github-style]) h1, .markdown-preview:not([data-use-github-style]) h2, .markdown-preview:not([data-use-github-style]) h3, .markdown-preview:not([data-use-github-style]) h4, .markdown-preview:not([data-use-github-style]) h5, .markdown-preview:not([data-use-github-style]) h6 { line-height: 1.2; margin-top: 1.5em; margin-bottom: 0.5em; color: rgb(255, 255, 255); }
@@ -23,8 +35,8 @@
 .markdown-preview:not([data-use-github-style]) table { margin: 1.5em 0px; }
 .markdown-preview:not([data-use-github-style]) th { color: rgb(255, 255, 255); }
 .markdown-preview:not([data-use-github-style]) th, .markdown-preview:not([data-use-github-style]) td { padding: 0.66em 1em; border: 1px solid rgb(75, 83, 98); }
-.markdown-preview:not([data-use-github-style]) code { color: rgb(255, 255, 255); background-color: rgb(58, 63, 75); }
-.markdown-preview:not([data-use-github-style]) pre.editor-colors { margin: 1.5em 0px; padding: 1em; font-size: 0.92em; border-radius: 3px; background-color: rgb(49, 54, 63); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) code { color: rgb(255, 255, 255); background-color: rgb(58, 63, 75); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) pre.editor-colors { margin: 1.5em 0px; padding: 1em; font-size: 0.92em; border-radius: 3px; background-color: rgb(49, 54, 63); }
 .markdown-preview:not([data-use-github-style]) kbd { color: rgb(255, 255, 255); border-width: 1px 1px 2px; border-style: solid; border-color: rgb(75, 83, 98) rgb(75, 83, 98) rgb(62, 68, 81); background-color: rgb(58, 63, 75); }
 .markdown-preview[data-use-github-style] { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; line-height: 1.6; word-wrap: break-word; padding: 30px; font-size: 16px; color: rgb(51, 51, 51); overflow: scroll; background-color: rgb(255, 255, 255); }
 .markdown-preview[data-use-github-style] > :first-child { margin-top: 0px !important; }
@@ -96,10 +108,14 @@
 .markdown-preview[data-use-github-style] pre code::before, .markdown-preview[data-use-github-style] pre tt::before, .markdown-preview[data-use-github-style] pre code::after, .markdown-preview[data-use-github-style] pre tt::after { content: normal; }
 .markdown-preview[data-use-github-style] kbd { display: inline-block; padding: 3px 5px; font-size: 11px; line-height: 10px; color: rgb(85, 85, 85); vertical-align: middle; border-style: solid; border-width: 1px; border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187); border-radius: 3px; box-shadow: rgb(187, 187, 187) 0px -1px 0px inset; background-color: rgb(252, 252, 252); }
 .markdown-preview[data-use-github-style] a { color: rgb(51, 122, 183); }
-.markdown-preview[data-use-github-style] code { color: inherit; }
-.markdown-preview[data-use-github-style] pre.editor-colors { padding: 0.8em 1em; margin-bottom: 1em; font-size: 0.85em; border-radius: 4px; overflow: auto; }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] code { color: inherit; }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] pre.editor-colors { padding: 0.8em 1em; margin-bottom: 1em; font-size: 0.85em; border-radius: 4px; overflow: auto; }
 .scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .horizontal-scrollbar { visibility: hidden; }
 .scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .horizontal-scrollbar { visibility: visible; }
+.markdown-preview del { text-decoration: none; position: relative; }
+.markdown-preview del::after { border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: black; content: ""; left: 0px; position: absolute; right: 0px; top: 50%; }
+.markdown-preview .flash { animation: flash 1s ease-out 1; outline: rgba(255, 0, 0, 0) solid 1px; }
+.markdown-preview .flash:not(li) { display: block; }
 .bracket-matcher .region {
   border-bottom: 1px dotted lime;
   position: absolute;
@@ -473,44 +489,44 @@ pre.editor-colors .fold-marker:after,
 }
 </style>
   </head>
-  <body class='markdown-preview'><h1 id="-">机器学习笔记</h1>
+  <body class='markdown-preview'><h1>机器学习笔记</h1>
 <p>第1周</p>
 <hr>
-<h2 id="-">一、引言</h2>
-<h2 id="-">二、单变量线性回归</h2>
-<h2 id="-">三、线性代数回顾</h2>
+<h2>一、引言</h2>
+<h2><a href="./week01_02.html">二、单变量线性回归</a></h2>
+<h2><a href="./week01_03.html">三、线性代数回顾</a></h2>
 <p>第2周</p>
 <hr>
-<h2 id="-">四、多变量线性回归</h2>
-<h2 id="-octave-">五、Octave教程</h2>
+<h2>四、多变量线性回归</h2>
+<h2>五、Octave教程</h2>
 <p>第3周</p>
 <hr>
-<h2 id="-">六、逻辑回归</h2>
-<h2 id="-">七、正则化</h2>
+<h2>六、逻辑回归</h2>
+<h2>七、正则化</h2>
 <p>第4周</p>
 <hr>
-<h2 id="-">八、神经网络：表述</h2>
+<h2>八、神经网络：表述</h2>
 <p>第5周</p>
 <hr>
-<h2 id="-">九、神经网络的学习</h2>
+<h2>九、神经网络的学习</h2>
 <p>第6周</p>
 <hr>
-<h2 id="-">十、应用机器学习的建议</h2>
-<h2 id="-">十一、机器学习系统的设计</h2>
+<h2>十、应用机器学习的建议</h2>
+<h2>十一、机器学习系统的设计</h2>
 <p>第7周</p>
 <hr>
-<h2 id="-">十二、支持向量积</h2>
+<h2>十二、支持向量积</h2>
 <p>第8周</p>
 <hr>
-<h2 id="-">十三、聚类</h2>
-<h2 id="-">十四、降维</h2>
+<h2>十三、聚类</h2>
+<h2>十四、降维</h2>
 <p>第9周</p>
 <hr>
-<h2 id="-">十五、异常检测</h2>
-<h2 id="-">十六、推荐系统</h2>
+<h2>十五、异常检测</h2>
+<h2>十六、推荐系统</h2>
 <p>第10周</p>
 <hr>
-<h2 id="-">十七、大规模机器学习</h2>
-<h2 id="-">十八、应用实例：图像文字识别</h2>
-<h2 id="-">十九、总结</h2></body>
+<h2>十七、大规模机器学习</h2>
+<h2>十八、应用实例：图像文字识别</h2>
+<h2>十九、总结</h2></body>
 </html>
