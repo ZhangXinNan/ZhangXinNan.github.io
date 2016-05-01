@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8" />
+      <title>ArtificialNeuralNetwork</title>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    extensions: [],
+    TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+    },
+    showMathMenu: false
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+</script>
+      <style>.markdown-preview:not([data-use-github-style]) { padding: 2em; font-size: 1.2em; color: rgb(171, 178, 191); overflow: auto; background-color: rgb(40, 44, 52); }
+.markdown-preview:not([data-use-github-style]) > :first-child { margin-top: 0px; }
+.markdown-preview:not([data-use-github-style]) h1, .markdown-preview:not([data-use-github-style]) h2, .markdown-preview:not([data-use-github-style]) h3, .markdown-preview:not([data-use-github-style]) h4, .markdown-preview:not([data-use-github-style]) h5, .markdown-preview:not([data-use-github-style]) h6 { line-height: 1.2; margin-top: 1.5em; margin-bottom: 0.5em; color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) h1 { font-size: 2.4em; font-weight: 300; }
+.markdown-preview:not([data-use-github-style]) h2 { font-size: 1.8em; font-weight: 400; }
+.markdown-preview:not([data-use-github-style]) h3 { font-size: 1.5em; font-weight: 500; }
+.markdown-preview:not([data-use-github-style]) h4 { font-size: 1.2em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h5 { font-size: 1.1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h6 { font-size: 1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) strong { color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) del { color: rgb(124, 135, 156); }
+.markdown-preview:not([data-use-github-style]) a, .markdown-preview:not([data-use-github-style]) a code { color: rgb(82, 139, 255); }
+.markdown-preview:not([data-use-github-style]) img { max-width: 100%; }
+.markdown-preview:not([data-use-github-style]) > p { margin-top: 0px; margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) > ul, .markdown-preview:not([data-use-github-style]) > ol { margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) blockquote { margin: 1.5em 0px; font-size: inherit; color: rgb(124, 135, 156); border-color: rgb(75, 83, 98); border-width: 4px; }
+.markdown-preview:not([data-use-github-style]) hr { margin: 3em 0px; border-top-width: 2px; border-top-style: dashed; border-top-color: rgb(75, 83, 98); background: none; }
+.markdown-preview:not([data-use-github-style]) table { margin: 1.5em 0px; }
+.markdown-preview:not([data-use-github-style]) th { color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) th, .markdown-preview:not([data-use-github-style]) td { padding: 0.66em 1em; border: 1px solid rgb(75, 83, 98); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) code { color: rgb(255, 255, 255); background-color: rgb(58, 63, 75); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) pre.editor-colors { margin: 1.5em 0px; padding: 1em; font-size: 0.92em; border-radius: 3px; background-color: rgb(49, 54, 63); }
+.markdown-preview:not([data-use-github-style]) kbd { color: rgb(255, 255, 255); border-width: 1px 1px 2px; border-style: solid; border-color: rgb(75, 83, 98) rgb(75, 83, 98) rgb(62, 68, 81); background-color: rgb(58, 63, 75); }
+.markdown-preview[data-use-github-style] { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; line-height: 1.6; word-wrap: break-word; padding: 30px; font-size: 16px; color: rgb(51, 51, 51); overflow: scroll; background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] > :first-child { margin-top: 0px !important; }
+.markdown-preview[data-use-github-style] > :last-child { margin-bottom: 0px !important; }
+.markdown-preview[data-use-github-style] a:not([href]) { color: inherit; text-decoration: none; }
+.markdown-preview[data-use-github-style] .absent { color: rgb(204, 0, 0); }
+.markdown-preview[data-use-github-style] .anchor { position: absolute; top: 0px; left: 0px; display: block; padding-right: 6px; padding-left: 30px; margin-left: -30px; }
+.markdown-preview[data-use-github-style] .anchor:focus { outline: none; }
+.markdown-preview[data-use-github-style] h1, .markdown-preview[data-use-github-style] h2, .markdown-preview[data-use-github-style] h3, .markdown-preview[data-use-github-style] h4, .markdown-preview[data-use-github-style] h5, .markdown-preview[data-use-github-style] h6 { position: relative; margin-top: 1em; margin-bottom: 16px; font-weight: bold; line-height: 1.4; }
+.markdown-preview[data-use-github-style] h1 .octicon-link, .markdown-preview[data-use-github-style] h2 .octicon-link, .markdown-preview[data-use-github-style] h3 .octicon-link, .markdown-preview[data-use-github-style] h4 .octicon-link, .markdown-preview[data-use-github-style] h5 .octicon-link, .markdown-preview[data-use-github-style] h6 .octicon-link { display: none; color: rgb(0, 0, 0); vertical-align: middle; }
+.markdown-preview[data-use-github-style] h1:hover .anchor, .markdown-preview[data-use-github-style] h2:hover .anchor, .markdown-preview[data-use-github-style] h3:hover .anchor, .markdown-preview[data-use-github-style] h4:hover .anchor, .markdown-preview[data-use-github-style] h5:hover .anchor, .markdown-preview[data-use-github-style] h6:hover .anchor { padding-left: 8px; margin-left: -30px; text-decoration: none; }
+.markdown-preview[data-use-github-style] h1:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h2:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h3:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h4:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h5:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h6:hover .anchor .octicon-link { display: inline-block; }
+.markdown-preview[data-use-github-style] h1 tt, .markdown-preview[data-use-github-style] h2 tt, .markdown-preview[data-use-github-style] h3 tt, .markdown-preview[data-use-github-style] h4 tt, .markdown-preview[data-use-github-style] h5 tt, .markdown-preview[data-use-github-style] h6 tt, .markdown-preview[data-use-github-style] h1 code, .markdown-preview[data-use-github-style] h2 code, .markdown-preview[data-use-github-style] h3 code, .markdown-preview[data-use-github-style] h4 code, .markdown-preview[data-use-github-style] h5 code, .markdown-preview[data-use-github-style] h6 code { font-size: inherit; }
+.markdown-preview[data-use-github-style] h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h1 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h2 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h3 { font-size: 1.5em; line-height: 1.43; }
+.markdown-preview[data-use-github-style] h3 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h4 { font-size: 1.25em; }
+.markdown-preview[data-use-github-style] h4 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h5 { font-size: 1em; }
+.markdown-preview[data-use-github-style] h5 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] h6 { font-size: 1em; color: rgb(119, 119, 119); }
+.markdown-preview[data-use-github-style] h6 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] p, .markdown-preview[data-use-github-style] blockquote, .markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol, .markdown-preview[data-use-github-style] dl, .markdown-preview[data-use-github-style] table, .markdown-preview[data-use-github-style] pre { margin-top: 0px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] hr { height: 4px; padding: 0px; margin: 16px 0px; border: 0px none; background-color: rgb(231, 231, 231); }
+.markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol { padding-left: 2em; }
+.markdown-preview[data-use-github-style] ul.no-list, .markdown-preview[data-use-github-style] ol.no-list { padding: 0px; list-style-type: none; }
+.markdown-preview[data-use-github-style] ul ul, .markdown-preview[data-use-github-style] ul ol, .markdown-preview[data-use-github-style] ol ol, .markdown-preview[data-use-github-style] ol ul { margin-top: 0px; margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] li > p { margin-top: 16px; }
+.markdown-preview[data-use-github-style] dl { padding: 0px; }
+.markdown-preview[data-use-github-style] dl dt { padding: 0px; margin-top: 16px; font-size: 1em; font-style: italic; font-weight: bold; }
+.markdown-preview[data-use-github-style] dl dd { padding: 0px 16px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] blockquote { padding: 0px 15px; color: rgb(119, 119, 119); border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] blockquote > :first-child { margin-top: 0px; }
+.markdown-preview[data-use-github-style] blockquote > :last-child { margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] table { display: block; width: 100%; overflow: auto; word-break: keep-all; }
+.markdown-preview[data-use-github-style] table th { font-weight: bold; }
+.markdown-preview[data-use-github-style] table th, .markdown-preview[data-use-github-style] table td { padding: 6px 13px; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+.markdown-preview[data-use-github-style] img { max-width: 100%; box-sizing: border-box; }
+.markdown-preview[data-use-github-style] .emoji { max-width: none; }
+.markdown-preview[data-use-github-style] span.frame { display: block; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.frame > span { display: block; float: left; width: auto; padding: 7px; margin: 13px 0px 0px; overflow: hidden; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] span.frame span img { display: block; float: left; }
+.markdown-preview[data-use-github-style] span.frame span span { display: block; padding: 5px 0px 0px; clear: both; color: rgb(51, 51, 51); }
+.markdown-preview[data-use-github-style] span.align-center { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-center > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-center span img { margin: 0px auto; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-right { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-right > span { display: block; margin: 13px 0px 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] span.align-right span img { margin: 0px; text-align: right; }
+.markdown-preview[data-use-github-style] span.float-left { display: block; float: left; margin-right: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-left span { margin: 13px 0px 0px; }
+.markdown-preview[data-use-github-style] span.float-right { display: block; float: right; margin-left: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-right > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] code, .markdown-preview[data-use-github-style] tt { padding: 0.2em 0px; margin: 0px; font-size: 85%; border-radius: 3px; background-color: rgba(0, 0, 0, 0.0392157); }
+.markdown-preview[data-use-github-style] code::before, .markdown-preview[data-use-github-style] tt::before, .markdown-preview[data-use-github-style] code::after, .markdown-preview[data-use-github-style] tt::after { letter-spacing: -0.2em; content: " "; }
+.markdown-preview[data-use-github-style] code br, .markdown-preview[data-use-github-style] tt br { display: none; }
+.markdown-preview[data-use-github-style] del code { text-decoration: inherit; }
+.markdown-preview[data-use-github-style] pre > code { padding: 0px; margin: 0px; font-size: 100%; word-break: normal; white-space: pre; border: 0px; background: transparent; }
+.markdown-preview[data-use-github-style] .highlight { margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] .highlight pre, .markdown-preview[data-use-github-style] pre { padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; border-radius: 3px; background-color: rgb(247, 247, 247); }
+.markdown-preview[data-use-github-style] .highlight pre { margin-bottom: 0px; word-break: normal; }
+.markdown-preview[data-use-github-style] pre { word-wrap: normal; }
+.markdown-preview[data-use-github-style] pre code, .markdown-preview[data-use-github-style] pre tt { display: inline; max-width: initial; padding: 0px; margin: 0px; overflow: initial; line-height: inherit; word-wrap: normal; border: 0px; background-color: transparent; }
+.markdown-preview[data-use-github-style] pre code::before, .markdown-preview[data-use-github-style] pre tt::before, .markdown-preview[data-use-github-style] pre code::after, .markdown-preview[data-use-github-style] pre tt::after { content: normal; }
+.markdown-preview[data-use-github-style] kbd { display: inline-block; padding: 3px 5px; font-size: 11px; line-height: 10px; color: rgb(85, 85, 85); vertical-align: middle; border-style: solid; border-width: 1px; border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187); border-radius: 3px; box-shadow: rgb(187, 187, 187) 0px -1px 0px inset; background-color: rgb(252, 252, 252); }
+.markdown-preview[data-use-github-style] a { color: rgb(51, 122, 183); }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] code { color: inherit; }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] pre.editor-colors { padding: 0.8em 1em; margin-bottom: 1em; font-size: 0.85em; border-radius: 4px; overflow: auto; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .horizontal-scrollbar { visibility: hidden; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .horizontal-scrollbar { visibility: visible; }
+.markdown-preview del { text-decoration: none; position: relative; }
+.markdown-preview del::after { border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: black; content: ""; left: 0px; position: absolute; right: 0px; top: 50%; }
+.markdown-preview .flash { animation: flash 1s ease-out 1; outline: rgba(255, 0, 0, 0) solid 1px; }
+.markdown-preview .flash:not(li) { display: block; }
+.markdown-preview:not([data-use-github-style]) { padding: 2em; font-size: 1.2em; color: rgb(171, 178, 191); overflow: auto; background-color: rgb(40, 44, 52); }
+.markdown-preview:not([data-use-github-style]) > :first-child { margin-top: 0px; }
+.markdown-preview:not([data-use-github-style]) h1, .markdown-preview:not([data-use-github-style]) h2, .markdown-preview:not([data-use-github-style]) h3, .markdown-preview:not([data-use-github-style]) h4, .markdown-preview:not([data-use-github-style]) h5, .markdown-preview:not([data-use-github-style]) h6 { line-height: 1.2; margin-top: 1.5em; margin-bottom: 0.5em; color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) h1 { font-size: 2.4em; font-weight: 300; }
+.markdown-preview:not([data-use-github-style]) h2 { font-size: 1.8em; font-weight: 400; }
+.markdown-preview:not([data-use-github-style]) h3 { font-size: 1.5em; font-weight: 500; }
+.markdown-preview:not([data-use-github-style]) h4 { font-size: 1.2em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h5 { font-size: 1.1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) h6 { font-size: 1em; font-weight: 600; }
+.markdown-preview:not([data-use-github-style]) strong { color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) del { color: rgb(124, 135, 156); }
+.markdown-preview:not([data-use-github-style]) a, .markdown-preview:not([data-use-github-style]) a code { color: rgb(82, 139, 255); }
+.markdown-preview:not([data-use-github-style]) img { max-width: 100%; }
+.markdown-preview:not([data-use-github-style]) > p { margin-top: 0px; margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) > ul, .markdown-preview:not([data-use-github-style]) > ol { margin-bottom: 1.5em; }
+.markdown-preview:not([data-use-github-style]) blockquote { margin: 1.5em 0px; font-size: inherit; color: rgb(124, 135, 156); border-color: rgb(75, 83, 98); border-width: 4px; }
+.markdown-preview:not([data-use-github-style]) hr { margin: 3em 0px; border-top-width: 2px; border-top-style: dashed; border-top-color: rgb(75, 83, 98); background: none; }
+.markdown-preview:not([data-use-github-style]) table { margin: 1.5em 0px; }
+.markdown-preview:not([data-use-github-style]) th { color: rgb(255, 255, 255); }
+.markdown-preview:not([data-use-github-style]) th, .markdown-preview:not([data-use-github-style]) td { padding: 0.66em 1em; border: 1px solid rgb(75, 83, 98); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) code { color: rgb(255, 255, 255); background-color: rgb(58, 63, 75); }
+.markdown-preview:not([data-use-github-style]) pre, .markdown-preview:not([data-use-github-style]) pre.editor-colors { margin: 1.5em 0px; padding: 1em; font-size: 0.92em; border-radius: 3px; background-color: rgb(49, 54, 63); }
+.markdown-preview:not([data-use-github-style]) kbd { color: rgb(255, 255, 255); border-width: 1px 1px 2px; border-style: solid; border-color: rgb(75, 83, 98) rgb(75, 83, 98) rgb(62, 68, 81); background-color: rgb(58, 63, 75); }
+.markdown-preview[data-use-github-style] { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; line-height: 1.6; word-wrap: break-word; padding: 30px; font-size: 16px; color: rgb(51, 51, 51); overflow: scroll; background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] > :first-child { margin-top: 0px !important; }
+.markdown-preview[data-use-github-style] > :last-child { margin-bottom: 0px !important; }
+.markdown-preview[data-use-github-style] a:not([href]) { color: inherit; text-decoration: none; }
+.markdown-preview[data-use-github-style] .absent { color: rgb(204, 0, 0); }
+.markdown-preview[data-use-github-style] .anchor { position: absolute; top: 0px; left: 0px; display: block; padding-right: 6px; padding-left: 30px; margin-left: -30px; }
+.markdown-preview[data-use-github-style] .anchor:focus { outline: none; }
+.markdown-preview[data-use-github-style] h1, .markdown-preview[data-use-github-style] h2, .markdown-preview[data-use-github-style] h3, .markdown-preview[data-use-github-style] h4, .markdown-preview[data-use-github-style] h5, .markdown-preview[data-use-github-style] h6 { position: relative; margin-top: 1em; margin-bottom: 16px; font-weight: bold; line-height: 1.4; }
+.markdown-preview[data-use-github-style] h1 .octicon-link, .markdown-preview[data-use-github-style] h2 .octicon-link, .markdown-preview[data-use-github-style] h3 .octicon-link, .markdown-preview[data-use-github-style] h4 .octicon-link, .markdown-preview[data-use-github-style] h5 .octicon-link, .markdown-preview[data-use-github-style] h6 .octicon-link { display: none; color: rgb(0, 0, 0); vertical-align: middle; }
+.markdown-preview[data-use-github-style] h1:hover .anchor, .markdown-preview[data-use-github-style] h2:hover .anchor, .markdown-preview[data-use-github-style] h3:hover .anchor, .markdown-preview[data-use-github-style] h4:hover .anchor, .markdown-preview[data-use-github-style] h5:hover .anchor, .markdown-preview[data-use-github-style] h6:hover .anchor { padding-left: 8px; margin-left: -30px; text-decoration: none; }
+.markdown-preview[data-use-github-style] h1:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h2:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h3:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h4:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h5:hover .anchor .octicon-link, .markdown-preview[data-use-github-style] h6:hover .anchor .octicon-link { display: inline-block; }
+.markdown-preview[data-use-github-style] h1 tt, .markdown-preview[data-use-github-style] h2 tt, .markdown-preview[data-use-github-style] h3 tt, .markdown-preview[data-use-github-style] h4 tt, .markdown-preview[data-use-github-style] h5 tt, .markdown-preview[data-use-github-style] h6 tt, .markdown-preview[data-use-github-style] h1 code, .markdown-preview[data-use-github-style] h2 code, .markdown-preview[data-use-github-style] h3 code, .markdown-preview[data-use-github-style] h4 code, .markdown-preview[data-use-github-style] h5 code, .markdown-preview[data-use-github-style] h6 code { font-size: inherit; }
+.markdown-preview[data-use-github-style] h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h1 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+.markdown-preview[data-use-github-style] h2 .anchor { line-height: 1; }
+.markdown-preview[data-use-github-style] h3 { font-size: 1.5em; line-height: 1.43; }
+.markdown-preview[data-use-github-style] h3 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h4 { font-size: 1.25em; }
+.markdown-preview[data-use-github-style] h4 .anchor { line-height: 1.2; }
+.markdown-preview[data-use-github-style] h5 { font-size: 1em; }
+.markdown-preview[data-use-github-style] h5 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] h6 { font-size: 1em; color: rgb(119, 119, 119); }
+.markdown-preview[data-use-github-style] h6 .anchor { line-height: 1.1; }
+.markdown-preview[data-use-github-style] p, .markdown-preview[data-use-github-style] blockquote, .markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol, .markdown-preview[data-use-github-style] dl, .markdown-preview[data-use-github-style] table, .markdown-preview[data-use-github-style] pre { margin-top: 0px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] hr { height: 4px; padding: 0px; margin: 16px 0px; border: 0px none; background-color: rgb(231, 231, 231); }
+.markdown-preview[data-use-github-style] ul, .markdown-preview[data-use-github-style] ol { padding-left: 2em; }
+.markdown-preview[data-use-github-style] ul.no-list, .markdown-preview[data-use-github-style] ol.no-list { padding: 0px; list-style-type: none; }
+.markdown-preview[data-use-github-style] ul ul, .markdown-preview[data-use-github-style] ul ol, .markdown-preview[data-use-github-style] ol ol, .markdown-preview[data-use-github-style] ol ul { margin-top: 0px; margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] li > p { margin-top: 16px; }
+.markdown-preview[data-use-github-style] dl { padding: 0px; }
+.markdown-preview[data-use-github-style] dl dt { padding: 0px; margin-top: 16px; font-size: 1em; font-style: italic; font-weight: bold; }
+.markdown-preview[data-use-github-style] dl dd { padding: 0px 16px; margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] blockquote { padding: 0px 15px; color: rgb(119, 119, 119); border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] blockquote > :first-child { margin-top: 0px; }
+.markdown-preview[data-use-github-style] blockquote > :last-child { margin-bottom: 0px; }
+.markdown-preview[data-use-github-style] table { display: block; width: 100%; overflow: auto; word-break: keep-all; }
+.markdown-preview[data-use-github-style] table th { font-weight: bold; }
+.markdown-preview[data-use-github-style] table th, .markdown-preview[data-use-github-style] table td { padding: 6px 13px; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); background-color: rgb(255, 255, 255); }
+.markdown-preview[data-use-github-style] table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+.markdown-preview[data-use-github-style] img { max-width: 100%; box-sizing: border-box; }
+.markdown-preview[data-use-github-style] .emoji { max-width: none; }
+.markdown-preview[data-use-github-style] span.frame { display: block; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.frame > span { display: block; float: left; width: auto; padding: 7px; margin: 13px 0px 0px; overflow: hidden; border: 1px solid rgb(221, 221, 221); }
+.markdown-preview[data-use-github-style] span.frame span img { display: block; float: left; }
+.markdown-preview[data-use-github-style] span.frame span span { display: block; padding: 5px 0px 0px; clear: both; color: rgb(51, 51, 51); }
+.markdown-preview[data-use-github-style] span.align-center { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-center > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-center span img { margin: 0px auto; text-align: center; }
+.markdown-preview[data-use-github-style] span.align-right { display: block; overflow: hidden; clear: both; }
+.markdown-preview[data-use-github-style] span.align-right > span { display: block; margin: 13px 0px 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] span.align-right span img { margin: 0px; text-align: right; }
+.markdown-preview[data-use-github-style] span.float-left { display: block; float: left; margin-right: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-left span { margin: 13px 0px 0px; }
+.markdown-preview[data-use-github-style] span.float-right { display: block; float: right; margin-left: 13px; overflow: hidden; }
+.markdown-preview[data-use-github-style] span.float-right > span { display: block; margin: 13px auto 0px; overflow: hidden; text-align: right; }
+.markdown-preview[data-use-github-style] code, .markdown-preview[data-use-github-style] tt { padding: 0.2em 0px; margin: 0px; font-size: 85%; border-radius: 3px; background-color: rgba(0, 0, 0, 0.0392157); }
+.markdown-preview[data-use-github-style] code::before, .markdown-preview[data-use-github-style] tt::before, .markdown-preview[data-use-github-style] code::after, .markdown-preview[data-use-github-style] tt::after { letter-spacing: -0.2em; content: " "; }
+.markdown-preview[data-use-github-style] code br, .markdown-preview[data-use-github-style] tt br { display: none; }
+.markdown-preview[data-use-github-style] del code { text-decoration: inherit; }
+.markdown-preview[data-use-github-style] pre > code { padding: 0px; margin: 0px; font-size: 100%; word-break: normal; white-space: pre; border: 0px; background: transparent; }
+.markdown-preview[data-use-github-style] .highlight { margin-bottom: 16px; }
+.markdown-preview[data-use-github-style] .highlight pre, .markdown-preview[data-use-github-style] pre { padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; border-radius: 3px; background-color: rgb(247, 247, 247); }
+.markdown-preview[data-use-github-style] .highlight pre { margin-bottom: 0px; word-break: normal; }
+.markdown-preview[data-use-github-style] pre { word-wrap: normal; }
+.markdown-preview[data-use-github-style] pre code, .markdown-preview[data-use-github-style] pre tt { display: inline; max-width: initial; padding: 0px; margin: 0px; overflow: initial; line-height: inherit; word-wrap: normal; border: 0px; background-color: transparent; }
+.markdown-preview[data-use-github-style] pre code::before, .markdown-preview[data-use-github-style] pre tt::before, .markdown-preview[data-use-github-style] pre code::after, .markdown-preview[data-use-github-style] pre tt::after { content: normal; }
+.markdown-preview[data-use-github-style] kbd { display: inline-block; padding: 3px 5px; font-size: 11px; line-height: 10px; color: rgb(85, 85, 85); vertical-align: middle; border-style: solid; border-width: 1px; border-color: rgb(204, 204, 204) rgb(204, 204, 204) rgb(187, 187, 187); border-radius: 3px; box-shadow: rgb(187, 187, 187) 0px -1px 0px inset; background-color: rgb(252, 252, 252); }
+.markdown-preview[data-use-github-style] a { color: rgb(51, 122, 183); }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] code { color: inherit; }
+.markdown-preview[data-use-github-style] pre, .markdown-preview[data-use-github-style] pre.editor-colors { padding: 0.8em 1em; margin-bottom: 1em; font-size: 0.85em; border-radius: 4px; overflow: auto; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors::shadow .horizontal-scrollbar { visibility: hidden; }
+.scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .vertical-scrollbar, .scrollbars-visible-always .markdown-preview pre.editor-colors:hover::shadow .horizontal-scrollbar { visibility: visible; }
+.markdown-preview del { text-decoration: none; position: relative; }
+.markdown-preview del::after { border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: black; content: ""; left: 0px; position: absolute; right: 0px; top: 50%; }
+.markdown-preview .flash { animation: flash 1s ease-out 1; outline: rgba(255, 0, 0, 0) solid 1px; }
+.markdown-preview .flash:not(li) { display: block; }
+.bracket-matcher .region {
+  border-bottom: 1px dotted lime;
+  position: absolute;
+}
+
+.spell-check-misspelling .region {
+  border-bottom: 2px dotted rgba(255, 51, 51, 0.75);
+}
+
+pre.editor-colors,
+.host {
+  background-color: #282c34;
+  color: #abb2bf;
+}
+pre.editor-colors .line.cursor-line,
+.host .line.cursor-line {
+  background-color: rgba(153, 187, 255, 0.04);
+}
+pre.editor-colors .invisible,
+.host .invisible {
+  color: #abb2bf;
+}
+pre.editor-colors .cursor,
+.host .cursor {
+  border-left: 2px solid #528bff;
+}
+pre.editor-colors .selection .region,
+.host .selection .region {
+  background-color: #3e4451;
+}
+pre.editor-colors .bracket-matcher .region,
+.host .bracket-matcher .region {
+  border-bottom: 1px solid #528bff;
+  box-sizing: border-box;
+}
+pre.editor-colors .invisible-character,
+.host .invisible-character {
+  color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .indent-guide,
+.host .indent-guide {
+  color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .wrap-guide,
+.host .wrap-guide {
+  background-color: rgba(171, 178, 191, 0.15);
+}
+pre.editor-colors .gutter .line-number,
+.host .gutter .line-number {
+  color: #636d83;
+  -webkit-font-smoothing: antialiased;
+}
+pre.editor-colors .gutter .line-number.cursor-line,
+.host .gutter .line-number.cursor-line {
+  color: #abb2bf;
+  background-color: #2c313a;
+}
+pre.editor-colors .gutter .line-number.cursor-line-no-selection,
+.host .gutter .line-number.cursor-line-no-selection {
+  background-color: transparent;
+}
+pre.editor-colors .gutter .line-number .icon-right,
+.host .gutter .line-number .icon-right {
+  color: #abb2bf;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed.git-line-removed::before,
+.host .gutter:not(.git-diff-icon) .line-number.git-line-removed.git-line-removed::before {
+  bottom: -3px;
+}
+pre.editor-colors .gutter:not(.git-diff-icon) .line-number.git-line-removed::after,
+.host .gutter:not(.git-diff-icon) .line-number.git-line-removed::after {
+  content: "";
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 25px;
+  border-bottom: 1px dotted rgba(224, 82, 82, 0.5);
+  pointer-events: none;
+}
+pre.editor-colors .gutter .line-number.folded,
+.host .gutter .line-number.folded,
+pre.editor-colors .gutter .line-number:after,
+.host .gutter .line-number:after,
+pre.editor-colors .fold-marker:after,
+.host .fold-marker:after {
+  color: #abb2bf;
+}
+.comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.comment .markup.link {
+  color: #5c6370;
+}
+.entity.name.type {
+  color: #e5c07b;
+}
+.entity.other.inherited-class {
+  color: #98c379;
+}
+.keyword {
+  color: #c678dd;
+}
+.keyword.control {
+  color: #c678dd;
+}
+.keyword.operator {
+  color: #abb2bf;
+}
+.keyword.other.special-method {
+  color: #61afef;
+}
+.keyword.other.unit {
+  color: #d19a66;
+}
+.storage {
+  color: #c678dd;
+}
+.storage.type.annotation,
+.storage.type.primitive {
+  color: #c678dd;
+}
+.storage.modifier.package,
+.storage.modifier.import {
+  color: #abb2bf;
+}
+.constant {
+  color: #d19a66;
+}
+.constant.variable {
+  color: #d19a66;
+}
+.constant.character.escape {
+  color: #56b6c2;
+}
+.constant.numeric {
+  color: #d19a66;
+}
+.constant.other.color {
+  color: #56b6c2;
+}
+.constant.other.symbol {
+  color: #56b6c2;
+}
+.variable {
+  color: #e06c75;
+}
+.variable.interpolation {
+  color: #be5046;
+}
+.variable.parameter {
+  color: #abb2bf;
+}
+.string {
+  color: #98c379;
+}
+.string.regexp {
+  color: #56b6c2;
+}
+.string.regexp .source.ruby.embedded {
+  color: #e5c07b;
+}
+.string.other.link {
+  color: #e06c75;
+}
+.punctuation.definition.comment {
+  color: #5c6370;
+}
+.punctuation.definition.method-parameters,
+.punctuation.definition.function-parameters,
+.punctuation.definition.parameters,
+.punctuation.definition.separator,
+.punctuation.definition.seperator,
+.punctuation.definition.array {
+  color: #abb2bf;
+}
+.punctuation.definition.heading,
+.punctuation.definition.identity {
+  color: #61afef;
+}
+.punctuation.definition.bold {
+  color: #e5c07b;
+  font-weight: bold;
+}
+.punctuation.definition.italic {
+  color: #c678dd;
+  font-style: italic;
+}
+.punctuation.section.embedded {
+  color: #be5046;
+}
+.punctuation.section.method,
+.punctuation.section.class,
+.punctuation.section.inner-class {
+  color: #abb2bf;
+}
+.support.class {
+  color: #e5c07b;
+}
+.support.type {
+  color: #56b6c2;
+}
+.support.function {
+  color: #56b6c2;
+}
+.support.function.any-method {
+  color: #61afef;
+}
+.entity.name.function {
+  color: #61afef;
+}
+.entity.name.class,
+.entity.name.type.class {
+  color: #e5c07b;
+}
+.entity.name.section {
+  color: #61afef;
+}
+.entity.name.tag {
+  color: #e06c75;
+}
+.entity.other.attribute-name {
+  color: #d19a66;
+}
+.entity.other.attribute-name.id {
+  color: #61afef;
+}
+.meta.class {
+  color: #e5c07b;
+}
+.meta.class.body {
+  color: #abb2bf;
+}
+.meta.method-call,
+.meta.method {
+  color: #abb2bf;
+}
+.meta.definition.variable {
+  color: #e06c75;
+}
+.meta.link {
+  color: #d19a66;
+}
+.meta.require {
+  color: #61afef;
+}
+.meta.selector {
+  color: #c678dd;
+}
+.meta.separator {
+  background-color: #373b41;
+  color: #abb2bf;
+}
+.meta.tag {
+  color: #abb2bf;
+}
+.underline {
+  text-decoration: underline;
+}
+.none {
+  color: #abb2bf;
+}
+.invalid.deprecated {
+  color: #523d14 !important;
+  background-color: #e0c285 !important;
+}
+.invalid.illegal {
+  color: #ffffff !important;
+  background-color: #e05252 !important;
+}
+.markup.bold {
+  color: #d19a66;
+  font-weight: bold;
+}
+.markup.changed {
+  color: #c678dd;
+}
+.markup.deleted {
+  color: #e06c75;
+}
+.markup.italic {
+  color: #c678dd;
+  font-style: italic;
+}
+.markup.heading {
+  color: #e06c75;
+}
+.markup.heading .punctuation.definition.heading {
+  color: #61afef;
+}
+.markup.link {
+  color: #c678dd;
+}
+.markup.inserted {
+  color: #98c379;
+}
+.markup.quote {
+  color: #d19a66;
+}
+.markup.raw {
+  color: #98c379;
+}
+.source.cs .keyword.operator {
+  color: #c678dd;
+}
+.source.css .property-name,
+.source.css .property-value {
+  color: #828997;
+}
+.source.css .property-name.support,
+.source.css .property-value.support {
+  color: #abb2bf;
+}
+.source.gfm .markup {
+  -webkit-font-smoothing: auto;
+}
+.source.gfm .link .entity {
+  color: #61afef;
+}
+.source.ini .keyword.other.definition.ini {
+  color: #e06c75;
+}
+.source.java .storage.modifier.import {
+  color: #e5c07b;
+}
+.source.java .storage.type {
+  color: #e5c07b;
+}
+.source.java-properties .meta.key-pair {
+  color: #e06c75;
+}
+.source.java-properties .meta.key-pair > .punctuation {
+  color: #abb2bf;
+}
+.source.js .keyword.operator {
+  color: #56b6c2;
+}
+.source.js .keyword.operator.delete,
+.source.js .keyword.operator.in,
+.source.js .keyword.operator.of,
+.source.js .keyword.operator.instanceof,
+.source.js .keyword.operator.new,
+.source.js .keyword.operator.typeof,
+.source.js .keyword.operator.void {
+  color: #c678dd;
+}
+.source.json .meta.structure.dictionary.json > .string.quoted.json {
+  color: #e06c75;
+}
+.source.json .meta.structure.dictionary.json > .string.quoted.json > .punctuation.string {
+  color: #e06c75;
+}
+.source.json .meta.structure.dictionary.json > .value.json > .string.quoted.json,
+.source.json .meta.structure.array.json > .value.json > .string.quoted.json,
+.source.json .meta.structure.dictionary.json > .value.json > .string.quoted.json > .punctuation,
+.source.json .meta.structure.array.json > .value.json > .string.quoted.json > .punctuation {
+  color: #98c379;
+}
+.source.json .meta.structure.dictionary.json > .constant.language.json,
+.source.json .meta.structure.array.json > .constant.language.json {
+  color: #56b6c2;
+}
+.source.ruby .constant.other.symbol > .punctuation {
+  color: inherit;
+}
+.source.python .keyword.operator.logical.python {
+  color: #c678dd;
+}
+.source.python .variable.parameter {
+  color: #d19a66;
+}
+</style>
+  </head>
+  <body class='markdown-preview'><h3>1 人工神经网络简介</h3>
+<h4>生物学动机</h4>
+<p>人工神经网络ANN的研究一定程度上受到了生物学的启发，生物的学习系统由相互连接的神经元（neuron）组成的异常复杂的网格。而人工神经网络由一系列简单的单元相互密集连接构成的，其中每一个单元有一定数量的实值输入，并产生单一的实数值输出。据估计人类的大脑是由大约<span class="math"><script type="math/tex">10^{11}$次方个神经元相互连接组成的密集网络，平均每个神经元与其他</script></span>10^4$个神经元相连。神经元的活性通常被通向其他神经元的连接激活或抑制。</p>
+<h3>2 神经网络表示</h3>
+<p>1993年的ALVINN系统是ANN学习的一个典型实例，这个系统使用一个学习到的ANN以正常的速度在高速公路上驾驶汽车。ANN的输入是一个30*32像素的网格，像素的亮度来自一个安装在车辆上的前向摄像机。ANN的输出是车辆行驶的方向。
+<img src="/Users/zhangxin/github/ZhangXinNan.github.io/data/images/ALVINN.jpg?v=1460602360862" alt="ALVINN"></p>
+<h3>3 适合神经网络学习的问题</h3>
+<ul>
+<li>实例是用很多属性-值表示的</li>
+<li>目标函数的输出可能是离散值、实数值或者由若干实数属性或者离散属性组成的向量</li>
+<li>训练数据可能包含错误</li>
+<li>可容忍长时间的训练</li>
+<li>可能需要快速求出目标函数值</li>
+<li>人类能否理解学到的目标函数不是重要的。</li>
+</ul>
+<h3>4 感知器</h3>
+<p>感知器以一个实数值向量作为输入，计算这些输入的线性组合 ，然后如果结果大于某个阈值，就输出1，否则输出-1。</p>
+<span class="math"><script type="math/tex; mode=display">o(x_1, x_2,...,x_n) = \begin{equation}
+\begin{cases}
+1  \quad  if (w_0 + w_1x_1+...+w_nx_n)\\
+-1  \quad otherwise
+\end{cases}
+\end{equation} </script></span>
+<p>假设输入空间（特征空间）是<span class="math"><script type="math/tex">X  \subseteq R^n</script></span>，输出空间是<span class="math"><script type="math/tex">Y = \{-1, +1\}</script></span>。输入<span class="math"><script type="math/tex">x \subseteq X</script></span>是实例的特征向量，对应于输入空间的点；输出<span class="math"><script type="math/tex">y \subseteq Y</script></span>表示实例的类别。由输入空间到输出空间的如下函数称为感知机：</p>
+<span class="math"><script type="math/tex; mode=display">f(x)=sign(w \cdot x + b)
+</script></span>
+<p>其中w b称为感知机的模型参数，w叫做权值（weight）或者权值向量（weight vector），b叫做偏置（bias）。<span class="math"><script type="math/tex">w\cdot x</script></span>表示w和x的内积。sign是符号函数：</p>
+<span class="math"><script type="math/tex; mode=display">sign(x) = \begin{equation}\begin{cases} +1, x >= 0 \\ -1 , x <= 0 \end{cases}\end{equation}
+</script></span>
+<p>感知机是一种线性分类模型，它的假设空间是定义在特征空间中的所有线性分类模型。
+感知机有如下几何解释：线性方程$<span class="math"><script type="math/tex">w \cdot x + b = 0</script></span>$
+对应于特征空间的一个超平面S。这个超平面把特征空间划分成两部分，位于两部分的点分别被分为正负两类。</p>
+<h3>5 多层网络和反向传播算法</h3>
+<h4>5.1 可微阈值单元</h4>
+<ul>
+<li>多个线性单元的连接仍然是产生的是线性函数，而我们更选择选择能够表征非线性函数的网络。</li>
+<li>感知器单元的不连续阈值使它不可微，所以不适合梯度下降算法。</li>
+</ul>
+<p>我们需要的是这样一种单元，它的输出是输入的非线性函数，并且输出是输入的可微函数。sigmoid单元是一种非常类似感知器的单元，并且它基于一个平滑的可微阈值函数。</p>
+<span class="math"><script type="math/tex; mode=display">o = \sigma(w * x)
+</script></span>
+<span class="math"><script type="math/tex; mode=display">\sigma(y)=\frac1{1+e^{-y}}
+</script></span>
+<ul>
+<li><span class="math"><script type="math/tex">\sigma</script></span>经常被称为Sigmoid函数或者logistic函数。它的输出范围是0到1，随输入单调递增。因为这个函数把非常大的输入值映射到一个小范围的输出，它经常被称为Sigmoid单元的挤压函数。</li>
+<li>sigmoid函数的导数很容易用它的输出表示。</li>
+</ul>
+<span class="math"><script type="math/tex; mode=display">\frac{\mathrm{d}  \sigma(y)}{\mathrm{d} y} = \sigma(y) * (1 - \sigma(y))
+</script></span>
+<h4>5.2 反向传播算法</h4>
+<p>对于一系列确定的单元互联形成的多层网络，反向传播算法可用来学习这个网络的权值。它采用梯度下降方法试图最小化网络输出值与目标值之间的误差平方。</p>
+<span class="math"><script type="math/tex; mode=display">E(w) = \frac1{2}\sum_{d\in{D}}\sum_{k\in{outputs}}(t_{kd}-o_{kd})^2
+</script></span>
+<p>其中outputs是网络输出单元的集合，<span class="math"><script type="math/tex">t_{kd}$和</script></span>o_{kd}<span class="math"><script type="math/tex">是与训练样例</script></span>d<span class="math"><script type="math/tex">和第</script></span>k$个输出单元相关的输出值。
+反向传播算法面临的学习问题是搜索一个巨大的假设空间，这个空间由网络中所有单元的所有可能的权值定义。
+在多层网络中，误差曲面可能有多个局部极小值。梯度下降仅能保证收敛到局部极小值，而未必得到全局最小的误差。
+包含两层sigmoid单元的前馈网络的反向传播算法：</p>
+<hr>
+<ul>
+<li>创建具有$n_{in}$个输入，$n_{hidden}$个隐藏单元，$n_{out}$个输出单元的网络。</li>
+<li>初始化所有的网络权值为小的随机值（-0.05-0.05）</li>
+<li>在遇到终止条件前：
+对于训练样例train_sample中的每一个(x, t)（x网络输入值的向量，t网络输出值的向量）</li>
+</ul>
+<ol>
+<li>把实例<span class="math"><script type="math/tex">x</script></span>输入网络，并计算网络中每个单元<span class="math"><script type="math/tex">u</script></span>的输出<span class="math"><script type="math/tex">o</script></span></li>
+<li>对于网络的每一个输出单元<span class="math"><script type="math/tex">k</script></span>，计算它的误差项$\delta_k$ <span class="math"><script type="math/tex"></script></span>\delta_k = o_k(1-o_k)(t_k-o_k)<span class="math"><script type="math/tex"></script></span></li>
+<li>对于网络的每个隐藏单元<span class="math"><script type="math/tex">h</script></span>，计算它的误差$\delta_h$ <span class="math"><script type="math/tex"></script></span>\delta_h = o_h(1-o_h)\sum_{k\in outputs}w_{kh}\delta_k$$</li>
+<li>更新每个网络权值<span class="math"><script type="math/tex">w_{ji}</script></span> <span class="math"><script type="math/tex">$w_{ji}=w_{ji} + \Delta w_{ji} $</script></span>
+其中$\delta_{ji}=\eta \delta_j x_{ji}$</li>
+</ol>
+<hr>
+<p>梯度下降更新法则依照以下三者来更新每一个权： 学习速率$\eta$，该权值涉及到输入<span class="math"><script type="math/tex">x_{ji}</script></span>，这个单元输出的误差。
+为了直观的理解它，先考虑网络的每一个输出单元k的$\delta_k<span class="math"><script type="math/tex">是怎样计算的。</script></span>\delta_k<span class="math"><script type="math/tex">与delta法则中的</script></span>(t_k-o_k)<span class="math"><script type="math/tex">相似，但乘上了挤压函数的导数</script></span>o_k(1-o_k)<span class="math"><script type="math/tex">。
+每个隐藏单元h的</script></span>\delta_h<span class="math"><script type="math/tex">具有相似的形式。因为训练样例仅对网络的输出提供了目标值，所有缺少直接的目标值来计算隐藏单元的误差值。因此采取下边间接办法计算隐藏单元的误差项：对受隐藏单元h影响的每一个单元的误差</script></span>\delta_h<span class="math"><script type="math/tex">进行加权求和，每个误差</script></span>\delta_k<span class="math"><script type="math/tex">权值为</script></span>w_{kh}$，$w_{kh}$就是从隐藏单元h到输出单元k的权值。这个权值刻画了隐藏单元h对于输出单元k的误差应“负责”的程度。</p>
+<h4>5.3 反向传播算法的推导</h4>
+<p>随机的梯度下降算法迭代处理训练样例，每次处理一个。对于每个训练样例<span class="math"><script type="math/tex">d</script></span>，利用这个样例的误差<span class="math"><script type="math/tex">E_d</script></span>的梯度修改权值。换句话说，对于每一个训练样例<span class="math"><script type="math/tex">d</script></span>，每个权<span class="math"><script type="math/tex">w_{ji}$增加</script></span>\Delta w_{ji}$。</p>
+<span class="math"><script type="math/tex; mode=display">\Delta w_{ji} = -\eta\frac{\partial E_d}{\partial w_{ji}}
+</script></span>
+<span class="math"><script type="math/tex; mode=display">E_d(w) = \frac1{2}\sum_{k\in{outputs}}(t_k - o_k)^2
+</script></span>
+<ul>
+<li><span class="math"><script type="math/tex">x_{ji}</script></span> = 单元<span class="math"><script type="math/tex">j</script></span>的第<span class="math"><script type="math/tex">i</script></span>个输入</li>
+<li><span class="math"><script type="math/tex">w_{ji}</script></span> = 与单元<span class="math"><script type="math/tex">j</script></span>的第<span class="math"><script type="math/tex">i</script></span>个输入相关联的权值</li>
+<li><span class="math"><script type="math/tex">net_j = \sum{w_{ji}x_{ji}}</script></span></li>
+<li><span class="math"><script type="math/tex">o_j</script></span> = 单元<span class="math"><script type="math/tex">j</script></span>计算出的输出</li>
+<li><span class="math"><script type="math/tex">t_j</script></span> = 单元<span class="math"><script type="math/tex">j</script></span>的目标输出</li>
+<li><span class="math"><script type="math/tex">\sigma</script></span> = sigmoid函数</li>
+<li>$outputs =$网络最后一层的单元的集合</li>
+<li><span class="math"><script type="math/tex">Downstream(j)$单元的直接输入中包含单元</script></span>j$ 的输出的单元的集合</li>
+</ul>
+<p>权值<span class="math"><script type="math/tex">w_{ji}$仅能通过</script></span>net_j$影响网络的其他部分。所以我们用链式规则得到 ：</p>
+<span class="math"><script type="math/tex; mode=display">\frac{\partial E_d}{\partial w_{ji}} = \frac{\partial E_d}{\partial net_j}\frac{\partial net_j}{\partial  w_{ji}} = \frac{\partial E_d}{\partial net_j} x_{ji}
+</script></span>
+<p>剩下的任务就是为$\frac{\partial E_d}{\partial net_j} $导出一个方便的表达式。</p>
+<ol>
+<li>输出单元的权值训练法则</li>
+</ol>
+<span class="math"><script type="math/tex; mode=display">\frac{\partial E_d}{\partial net_j} = \frac{\partial E_d}{\partial o_j} \frac{\partial o_j}{\partial net_j}
+</script></span>
+<p>（1） 考虑公式中的第一项（$\frac{\partial E_d}{\partial o_j} $）</p>
+<span class="math"><script type="math/tex; mode=display">\frac {\partial E_d}{\partial o_j} = \frac {\partial}{o_j} \frac 1 2 \sum_{k \in outputs} (t_k - o_k)^2
+</script></span>
+<p>除了当<span class="math"><script type="math/tex">k = j $时，所有输出单元k的导数</script></span>\frac {\partial} {\partial o_j} (t_k-o_k)^2<span class="math"><script type="math/tex">为0。
+所以我们不必对多个输出单元求和，只需设</script></span>k=j$</p>
+<span class="math"><script type="math/tex; mode=display"> \begin{split}
+\frac{\partial E_d}{\partial o_j} &= \frac{\partial }{\partial o_j}\frac12(t_j-o_j)^2 \\
+&= (t_j-o_j)\frac{\partial(t_j-o_j)}{\partial o_j} \\
+&= -(t_j-o_j)\end{split} </script></span>
+<p>（2） 考虑公式中的第二项（<span class="math"><script type="math/tex">\frac{\partial o_j}{\partial net_j}</script></span>）
+既然<span class="math"><script type="math/tex">o_j=\sigma(net_j)</script></span>，导数$\frac{\partial o_j}{\partial net_j}$就是sigmoid函数的导数。</p>
+<span class="math"><script type="math/tex; mode=display">\frac {\partial o_j}{\partial net_j} = \frac{\partial\sigma(net_j)}{\partial net_j} = o_j(1-o_j)
+</script></span>
+<p>由上可得：</p>
+<span class="math"><script type="math/tex; mode=display">\frac{\partial{E_d}}{\partial{net_j}}=-(t_j-o_j)o_j(1-o_j)
+</script></span>
+<p>输出单元的随机梯度下降法则：</p>
+<span class="math"><script type="math/tex; mode=display">\Delta w_{ji}=\eta\frac{\partial E_d}{\partial w_{ji}}=\eta(t_j-o_j)o_j(1-o_j)x_{ji}
+</script></span>
+<ol start="2">
+<li>隐藏单元的权值训练法则
+对于网络中的内部单元或者隐藏单元的情况，推导<span class="math"><script type="math/tex">w_{ji}$必须考虑</script></span>w_{ji}<span class="math"><script type="math/tex">间接地影响网络输出，从而影响</script></span>E_d$。
+<span class="math"><script type="math/tex">net_j</script></span>只能通过 <span class="math"><script type="math/tex">Downstream(j)$中的单元影响网络输出，再影响</script></span>E_d$。</li>
+</ol>
+<span class="math"><script type="math/tex; mode=display">\begin{split}\frac{\partial E_d}{\partial net_j} &=\sum_{k\in Downstream(j)}\frac{\partial E_d}{\partial net_k}\frac{net_k}{net_j} \\&=\sum_{k\in Downstream(j)}-\delta_k\frac{net_k}{net_j}\\&=\sum_{k\in Downstream(j)}-\delta_k\frac{\partial net_k}{\partial o_j}\frac {\partial o_j}{\partial net_j}\\&=\sum_{k\in Downstream(j)}-\delta_k w_{kj}\frac {\partial o_j}{\partial net_j}\\&=\sum_{k\in Downstream(j)}-\delta_k w_{kj}o_j(1-o_j)\end{split}
+</script></span>
+<p>用$\delta_j<span class="math"><script type="math/tex">表示</script></span>-\frac{\partial E_d}{\partial net_j}$，得到：</p>
+<span class="math"><script type="math/tex; mode=display">\delta_j=o_j(1-o_j)\sum_k\in Donwstream(j)\delta_k w_{kj}
+</script></span>
+<span class="math"><script type="math/tex; mode=display">\Delta w_{ji}=\eta \delta_j x_{ji}
+</script></span>
+<h4>5.4 代码实践</h4>
+<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//#include&nbsp;&quot;load_dataset.hpp&quot;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;stdint.h&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;sys/stat.h&gt;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;fstream&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;string&gt;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;opencv2/opencv.hpp&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>using&nbsp;namespace&nbsp;cv;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;iostream&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;string&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;vector&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>using&nbsp;namespace&nbsp;std;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;time.h&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;stdio.h&gt;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>#include&nbsp;&lt;stdlib.h&gt;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>uint32_t&nbsp;swap_endian(uint32_t&nbsp;val)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>val&nbsp;=&nbsp;((val&nbsp;&lt;&lt;&nbsp;8)&nbsp;&amp;&nbsp;0xFF00FF00)&nbsp;|&nbsp;((val&nbsp;&gt;&gt;&nbsp;8)&nbsp;&amp;&nbsp;0xFF00FF);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;return&nbsp;(val&nbsp;&lt;&lt;&nbsp;16)&nbsp;|&nbsp;(val&nbsp;&gt;&gt;&nbsp;16);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>inline&nbsp;cv::Mat&nbsp;str2Mat(const&nbsp;char*&nbsp;pixels,&nbsp;const&nbsp;int&nbsp;row,&nbsp;const&nbsp;int&nbsp;col){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>cv::Mat&nbsp;m(row,&nbsp;col,&nbsp;CV_8UC1);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;y&nbsp;=&nbsp;0;&nbsp;y&nbsp;&lt;&nbsp;row;&nbsp;y++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>memcpy(m.data&nbsp;+&nbsp;y&nbsp;*&nbsp;m.step,&nbsp;pixels&nbsp;+&nbsp;y&nbsp;*&nbsp;col,&nbsp;col);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;return&nbsp;m;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;convert_dataset(const&nbsp;string&nbsp;&amp;image_filename,&nbsp;const&nbsp;string&nbsp;&amp;label_filename,&nbsp;std::vector&lt;&nbsp;std::vector&lt;cv::Mat&gt;&nbsp;&gt;&nbsp;&amp;vvMat)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>vvMat.resize(10);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//&nbsp;Open&nbsp;files</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::ifstream&nbsp;image_file(image_filename,&nbsp;std::ios::in&nbsp;|&nbsp;std::ios::binary);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::ifstream&nbsp;label_file(label_filename,&nbsp;std::ios::in&nbsp;|&nbsp;std::ios::binary);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//CHECK(image_file)&nbsp;&lt;&lt;&nbsp;&quot;Unable&nbsp;to&nbsp;open&nbsp;file&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;image_filename;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//CHECK(label_file)&nbsp;&lt;&lt;&nbsp;&quot;Unable&nbsp;to&nbsp;open&nbsp;file&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;label_filename;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//&nbsp;Read&nbsp;the&nbsp;magic&nbsp;and&nbsp;the&nbsp;meta&nbsp;data</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;uint32_t&nbsp;magic;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;uint32_t&nbsp;num_items;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;uint32_t&nbsp;num_labels;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;uint32_t&nbsp;rows;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;uint32_t&nbsp;cols;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>image_file.read(reinterpret_cast&lt;char*&gt;(&amp;magic),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;magic&nbsp;=&nbsp;swap_endian(magic);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//CHECK_EQ(magic,&nbsp;2051)&nbsp;&lt;&lt;&nbsp;&quot;Incorrect&nbsp;image&nbsp;file&nbsp;magic.&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;label_file.read(reinterpret_cast&lt;char*&gt;(&amp;magic),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;magic&nbsp;=&nbsp;swap_endian(magic);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//CHECK_EQ(magic,&nbsp;2049)&nbsp;&lt;&lt;&nbsp;&quot;Incorrect&nbsp;label&nbsp;file&nbsp;magic.&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;image_file.read(reinterpret_cast&lt;char*&gt;(&amp;num_items),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;num_items&nbsp;=&nbsp;swap_endian(num_items);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;label_file.read(reinterpret_cast&lt;char*&gt;(&amp;num_labels),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;num_labels&nbsp;=&nbsp;swap_endian(num_labels);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;num_items&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;num_items&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;num_labels&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;num_labels&nbsp;&lt;&lt;&nbsp;std::endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//CHECK_EQ(num_items,&nbsp;num_labels);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;image_file.read(reinterpret_cast&lt;char*&gt;(&amp;rows),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;rows&nbsp;=&nbsp;swap_endian(rows);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;image_file.read(reinterpret_cast&lt;char*&gt;(&amp;cols),&nbsp;4);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;cols&nbsp;=&nbsp;swap_endian(cols);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;rows&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;rows&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;cols&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;cols&nbsp;&lt;&lt;&nbsp;std::endl;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>//&nbsp;Storing&nbsp;to&nbsp;db</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;char&nbsp;label;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;char*&nbsp;pixels&nbsp;=&nbsp;new&nbsp;char[rows&nbsp;*&nbsp;cols];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;item_id&nbsp;=&nbsp;0;&nbsp;item_id&nbsp;&lt;&nbsp;num_items;&nbsp;++item_id)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>image_file.read(pixels,&nbsp;rows&nbsp;*&nbsp;cols);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label_file.read(&amp;label,&nbsp;1);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv::Mat&nbsp;img&nbsp;=&nbsp;str2Mat(pixels,&nbsp;rows,&nbsp;cols);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//std::cout&nbsp;&lt;&lt;&nbsp;int(label)&nbsp;&lt;&lt;&nbsp;std::endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//print_mat(img);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//string&nbsp;winname&nbsp;=&nbsp;&quot;0&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//winname[0]&nbsp;+=&nbsp;label;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//imshow(winname,&nbsp;img);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//waitKey();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//destroyAllWindows();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vvMat[label].push_back(img);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//break;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>delete[]&nbsp;pixels;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>inline&nbsp;double&nbsp;sigmoid(double&nbsp;z)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>return&nbsp;1.0&nbsp;/&nbsp;(1.0&nbsp;+&nbsp;exp(-z));</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//sigmoid函数的导数</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>inline&nbsp;double&nbsp;sigmoid_prime(double&nbsp;z)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>return&nbsp;sigmoid(z)&nbsp;*&nbsp;(1&nbsp;-&nbsp;sigmoid(z));</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>const&nbsp;int&nbsp;n_in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;784;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>const&nbsp;int&nbsp;n_hidden&nbsp;&nbsp;=&nbsp;30;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>const&nbsp;int&nbsp;n_out&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;10;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;w1[n_hidden][n_in];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;w2[n_out][n_hidden];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;b1[n_hidden];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;b2[n_out];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;delta_w1[n_hidden];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;delta_w2[n_out];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;delta_b1[n_hidden];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;delta_b2[n_out];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;eta&nbsp;=&nbsp;0.01;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;init_wb();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;init_delta();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;evaluate(const&nbsp;vector&lt;vector&lt;Mat&gt;&gt;&nbsp;&amp;vvMatTest,&nbsp;const&nbsp;int&nbsp;num&nbsp;=&nbsp;1000);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;forward(double*&nbsp;x,&nbsp;double*&nbsp;y,&nbsp;double*&nbsp;h);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;Mat8uc1_darr(const&nbsp;Mat&amp;&nbsp;m,&nbsp;double&nbsp;*arr);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;print_mat(const&nbsp;cv::Mat&nbsp;&amp;m);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;print_array(const&nbsp;double*&nbsp;arr,&nbsp;int&nbsp;size1,&nbsp;int&nbsp;size2&nbsp;=&nbsp;0);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;sgd(const&nbsp;vector&lt;vector&lt;Mat&gt;&gt;&nbsp;&amp;vvMatTrain,&nbsp;const&nbsp;int&nbsp;numTrain,&nbsp;const&nbsp;int&nbsp;beginIndex&nbsp;=&nbsp;0);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>int&nbsp;main()&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>string&nbsp;data_path&nbsp;=&nbsp;&quot;/Users/zhangxin/datas/mnist/&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;string&nbsp;images_test&nbsp;=&nbsp;&quot;t10k-images-idx3-ubyte&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;string&nbsp;labels_test&nbsp;=&nbsp;&quot;t10k-labels-idx1-ubyte&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;string&nbsp;images_train&nbsp;=&nbsp;&quot;train-images-idx3-ubyte&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;string&nbsp;labels_train&nbsp;=&nbsp;&quot;train-labels-idx1-ubyte&quot;;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::vector&lt;&nbsp;std::vector&lt;cv::Mat&gt;&nbsp;&gt;&nbsp;vvMat;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::vector&lt;&nbsp;std::vector&lt;cv::Mat&gt;&nbsp;&gt;&nbsp;vvMatTest;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;convert_dataset(data_path&nbsp;+&nbsp;images_test,&nbsp;&nbsp;data_path&nbsp;+&nbsp;labels_test,&nbsp;vvMatTest);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;convert_dataset(data_path&nbsp;+&nbsp;images_train,&nbsp;data_path&nbsp;+&nbsp;labels_train,&nbsp;vvMat);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>init_wb();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;evaluate(vvMatTest,&nbsp;2000);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;1000;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;%4d&nbsp;--------\n&quot;,&nbsp;i);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sgd(vvMat,&nbsp;100,&nbsp;i&nbsp;*&nbsp;100);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evaluate(vvMatTest,&nbsp;2000);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;//evaluate(vvMatTest,&nbsp;1000);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>return&nbsp;0;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;sgd(const&nbsp;vector&lt;vector&lt;Mat&gt;&gt;&nbsp;&amp;vvMatTrain,&nbsp;const&nbsp;int&nbsp;numTrain,&nbsp;const&nbsp;int&nbsp;beginIndex){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>init_delta();</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;numTrain&nbsp;;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>double&nbsp;y[n_out]&nbsp;=&nbsp;{0.0};</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;x[n_in]&nbsp;=&nbsp;{0.0};</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;h[n_hidden]&nbsp;=&nbsp;{0.0};</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mat8uc1_darr(vvMatTrain[i][(beginIndex&nbsp;+&nbsp;j)&nbsp;%&nbsp;vvMatTrain[i].size()],&nbsp;x);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward(x,&nbsp;y,&nbsp;h);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>double&nbsp;t[n_out]&nbsp;=&nbsp;{0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t[i]&nbsp;=&nbsp;1.0;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;m&nbsp;=&nbsp;0;&nbsp;m&nbsp;&lt;&nbsp;n_out;&nbsp;m++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>delta_w2[m]&nbsp;=&nbsp;delta_b2[m]&nbsp;=&nbsp;y[m]&nbsp;*&nbsp;(1-y[m])&nbsp;*&nbsp;(t[m]&nbsp;-&nbsp;y[m]);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b2[m]&nbsp;+=&nbsp;eta&nbsp;*&nbsp;delta_b2[m];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;n&nbsp;=&nbsp;0;&nbsp;n&nbsp;&lt;&nbsp;n_hidden;&nbsp;n++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>w2[m][n]&nbsp;+=&nbsp;eta&nbsp;*&nbsp;delta_w2[m]&nbsp;*&nbsp;h[n];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;m&nbsp;=&nbsp;0;&nbsp;m&nbsp;&lt;&nbsp;n_hidden;&nbsp;m++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>delta_b1[m]&nbsp;=&nbsp;0.0;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;k&nbsp;=&nbsp;0;&nbsp;k&nbsp;&lt;&nbsp;n_out;&nbsp;k++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>delta_b1[m]&nbsp;+=&nbsp;w2[k][m]&nbsp;*&nbsp;delta_w2[k];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delta_w1[m]&nbsp;=&nbsp;delta_b1[m]&nbsp;=&nbsp;delta_b1[m]&nbsp;*&nbsp;h[m]&nbsp;*&nbsp;(1&nbsp;-&nbsp;h[m]);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b1[m]&nbsp;+=&nbsp;eta&nbsp;*&nbsp;delta_b1[m];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;n&nbsp;=&nbsp;0;&nbsp;n&nbsp;&lt;&nbsp;n_in;&nbsp;n++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>w1[m][n]&nbsp;+=&nbsp;eta&nbsp;*&nbsp;delta_w1[m]&nbsp;*&nbsp;x[n];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>double&nbsp;evaluate(const&nbsp;vector&lt;vector&lt;Mat&gt;&gt;&nbsp;&amp;vvMatTest,&nbsp;const&nbsp;int&nbsp;num){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>int&nbsp;sum&nbsp;=&nbsp;0;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;int&nbsp;sum_right&nbsp;=&nbsp;0;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;vector&lt;int&gt;&nbsp;vec_sum(10,&nbsp;0);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;vector&lt;int&gt;&nbsp;vec_sum_right(10,&nbsp;0);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;int&nbsp;result[10][10];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;memset(result,&nbsp;0,&nbsp;sizeof(int)&nbsp;*&nbsp;100);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out&nbsp;&amp;&amp;&nbsp;i&nbsp;&lt;&nbsp;vvMatTest.size();&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;num&nbsp;&amp;&amp;&nbsp;j&nbsp;&lt;&nbsp;(int)vvMatTest[i].size();&nbsp;j++)&nbsp;{//</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>double&nbsp;x[n_in];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;y[n_out];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;h[n_hidden];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;Mat&nbsp;&amp;img&nbsp;=&nbsp;vvMatTest[i][j];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>Mat8uc1_darr(img,&nbsp;x);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_mat(img);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_array(x,&nbsp;img.rows,&nbsp;img.cols);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imshow(&quot;00&quot;,&nbsp;img);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waitKey();</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>forward(x,&nbsp;y,&nbsp;h);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;predict_label&nbsp;=&nbsp;0;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;predict_f&nbsp;=&nbsp;y[0];//y.at&lt;double&gt;(0,&nbsp;0);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//printf(&quot;%2d&nbsp;%4d&nbsp;:[&nbsp;0]&nbsp;%6.3f,&nbsp;&quot;,&nbsp;i,&nbsp;j,&nbsp;predict_f);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;k&nbsp;=&nbsp;1;&nbsp;k&nbsp;&lt;&nbsp;n_out;&nbsp;k++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>double&nbsp;f&nbsp;=&nbsp;y[k];//y.at&lt;double&gt;(0,&nbsp;k);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//printf(&quot;%d&nbsp;%6.3f,&nbsp;&quot;,&nbsp;k,&nbsp;f);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(f&nbsp;&nbsp;&gt;&nbsp;predict_f&nbsp;)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>predict_f&nbsp;=&nbsp;f;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;predict_label&nbsp;=&nbsp;k;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//printf(&quot;&nbsp;predict&nbsp;:&nbsp;%d&nbsp;%6.3f\n&quot;,&nbsp;predict_label,&nbsp;predict_f);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>vec_sum[i]++;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sum++;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(predict_label&nbsp;==&nbsp;i)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>sum_right++;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vec_sum_right[i]++;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[i][predict_label]++;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;sum&nbsp;:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;sum&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;sum_right&nbsp;:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;sum_right&nbsp;&lt;&lt;&nbsp;std::endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;&nbsp;[%d]&nbsp;[%4d&nbsp;%4d]&nbsp;&quot;,&nbsp;i,&nbsp;vec_sum[i],&nbsp;vec_sum_right[i]);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;n_out;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf&nbsp;(&quot;%4d&nbsp;&quot;,&nbsp;result[i][j]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;return&nbsp;sum_right&nbsp;/&nbsp;double(sum);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;forward(double*&nbsp;x,&nbsp;double*&nbsp;y,&nbsp;double*&nbsp;h){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_hidden;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>h[i]&nbsp;=&nbsp;b1[i];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;n_in;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>h[i]&nbsp;+=&nbsp;x[j]&nbsp;*&nbsp;w1[i][j];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h[i]&nbsp;=&nbsp;sigmoid(h[i]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>y[i]&nbsp;=&nbsp;b2[i];</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;n_hidden;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>y[i]&nbsp;+=&nbsp;h[j]&nbsp;*&nbsp;w2[i][j];</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y[i]&nbsp;=&nbsp;sigmoid(y[i]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;Mat8uc1_darr(const&nbsp;Mat&amp;&nbsp;m,&nbsp;double&nbsp;*arr)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;y&nbsp;=&nbsp;0;&nbsp;y&nbsp;&lt;&nbsp;m.rows;&nbsp;y++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;x&nbsp;=&nbsp;0;&nbsp;x&nbsp;&lt;&nbsp;m.cols;&nbsp;x++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>arr[y&nbsp;*&nbsp;m.cols&nbsp;+&nbsp;x]&nbsp;=&nbsp;m.at&lt;uchar&gt;(y,x)&nbsp;/&nbsp;255.0;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;init_delta(){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>memset(delta_w1,&nbsp;0,&nbsp;sizeof(double)&nbsp;*&nbsp;n_hidden);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;memset(delta_w2,&nbsp;0,&nbsp;sizeof(double)&nbsp;*&nbsp;n_out);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;memset(delta_b1,&nbsp;0,&nbsp;sizeof(double)&nbsp;*&nbsp;n_hidden);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;memset(delta_b2,&nbsp;0,&nbsp;sizeof(double)&nbsp;*&nbsp;n_out);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;init_wb()&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>std::srand((unsigned)std::time(0));&nbsp;//&nbsp;use&nbsp;current&nbsp;time&nbsp;as&nbsp;seed&nbsp;for&nbsp;random&nbsp;generator</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;init&nbsp;w1&nbsp;:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_hidden;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>cout&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;w1[&quot;&nbsp;&lt;&lt;&nbsp;i&nbsp;&lt;&lt;&nbsp;&quot;]&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;n_in;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>w1[i][j]&nbsp;=&nbsp;std::rand()/double(RAND_MAX)&nbsp;-&nbsp;0.5;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w1[i][j]&nbsp;*=&nbsp;0.1;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;%6.3f&nbsp;&quot;,&nbsp;w1[i][j]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;init&nbsp;w2&nbsp;:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>cout&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;w1[&quot;&nbsp;&lt;&lt;&nbsp;i&nbsp;&lt;&lt;&nbsp;&quot;]&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;n_hidden;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>w2[i][j]&nbsp;=&nbsp;std::rand()/double(RAND_MAX)&nbsp;-&nbsp;0.5;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w2[i][j]&nbsp;*=&nbsp;0.1;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;%6.3f&nbsp;&quot;,&nbsp;w2[i][j]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;&quot;init&nbsp;b1&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_hidden;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>b1[i]&nbsp;=&nbsp;std::rand()&nbsp;/&nbsp;double(RAND_MAX)&nbsp;-&nbsp;0.5;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b1[i]&nbsp;*=&nbsp;0.1;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;%6.3f&nbsp;&quot;,&nbsp;b1[i]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>cout&nbsp;&lt;&lt;&nbsp;&quot;init&nbsp;b2&quot;&nbsp;&lt;&lt;&nbsp;endl;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;n_out;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>b2[i]&nbsp;=&nbsp;std::rand()&nbsp;/&nbsp;double(RAND_MAX)&nbsp;-&nbsp;0.5;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b2[i]&nbsp;*=&nbsp;0.2;</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;%6.3f&nbsp;&quot;,&nbsp;b2[i]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span>&nbsp;</span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;print_mat(const&nbsp;cv::Mat&nbsp;&amp;m)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;y&nbsp;=&nbsp;0;&nbsp;y&nbsp;&lt;&nbsp;m.rows;&nbsp;y++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;[%4d]&nbsp;&quot;,&nbsp;y);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;x&nbsp;=&nbsp;0;&nbsp;x&nbsp;&lt;&nbsp;m.cols;&nbsp;x++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>switch(m.type()){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>case&nbsp;CV_8UC1:</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;%3d&nbsp;&quot;,&nbsp;m.data[y&nbsp;*&nbsp;m.step&nbsp;+&nbsp;x]);&nbsp;break;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>case&nbsp;CV_64FC1:</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;%6.3f&nbsp;&quot;,&nbsp;m.at&lt;double&gt;(y,x));&nbsp;&nbsp;&nbsp;&nbsp;break;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;std::endl;</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>void&nbsp;print_array(const&nbsp;double*&nbsp;arr,&nbsp;int&nbsp;size1,&nbsp;int&nbsp;size2)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>for&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;size1;&nbsp;i++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>if(&nbsp;size2&nbsp;&gt;&nbsp;1){</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;[%4d]&nbsp;&quot;,&nbsp;i);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;size2;&nbsp;j++)&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;%6.3f&nbsp;&quot;,&nbsp;arr[i&nbsp;*&nbsp;size2&nbsp;+&nbsp;j]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}else&nbsp;{</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>printf(&quot;%6.3f&nbsp;&quot;,&nbsp;arr[i]);</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span>&nbsp;&nbsp;&nbsp;</span><span class="meta paragraph text"><span>}</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>&nbsp;&nbsp;&nbsp;printf(&quot;\n&quot;);</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>}</span></span></span></div></pre>
+<p>在迭代了1000次后得到 准确率94.85%， 输出结果：</p>
+<pre class="editor-colors lang-text"><div class="line"><span class="text plain"><span class="meta paragraph text"><span>999&nbsp;--------</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>sum&nbsp;:&nbsp;10000,&nbsp;sum_right&nbsp;:&nbsp;9485</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[0]&nbsp;[&nbsp;980&nbsp;&nbsp;965]&nbsp;&nbsp;965&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;0</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[1]&nbsp;[1135&nbsp;1114]&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;1114&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;0</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[2]&nbsp;[1032&nbsp;&nbsp;961]&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;961&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;21&nbsp;&nbsp;&nbsp;&nbsp;2</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[3]&nbsp;[1010&nbsp;&nbsp;952]&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;15&nbsp;&nbsp;952&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;2</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[4]&nbsp;[&nbsp;982&nbsp;&nbsp;929]&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;929&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;26</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[5]&nbsp;[&nbsp;892&nbsp;&nbsp;822]&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;822&nbsp;&nbsp;&nbsp;13&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;7</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[6]&nbsp;[&nbsp;958&nbsp;&nbsp;921]&nbsp;&nbsp;&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;921&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;0</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[7]&nbsp;[1028&nbsp;&nbsp;967]&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;967&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;15</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[8]&nbsp;[&nbsp;974&nbsp;&nbsp;918]&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;14&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;918&nbsp;&nbsp;&nbsp;&nbsp;2</span></span></span></div><div class="line"><span class="text plain"><span class="meta paragraph text"><span>[9]&nbsp;[1009&nbsp;&nbsp;936]&nbsp;&nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;14&nbsp;&nbsp;&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;936</span></span></span></div></pre></body>
+</html>
