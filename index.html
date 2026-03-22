@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Te Rimu Story Gallery</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: rgba(15, 23, 42, 0.78);
+      --panel-2: rgba(30, 41, 59, 0.92);
+      --text: #e5eefc;
+      --muted: #a8b4c8;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --border: rgba(148, 163, 184, 0.22);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 28%),
+        linear-gradient(180deg, #0b1220 0%, #111827 100%);
+      color: var(--text);
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .sidebar h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .sidebar p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .keyword-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .keyword-btn {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      text-align: left;
+      padding: 14px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .keyword-btn:hover,
+    .keyword-btn.active {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.65);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .keyword-btn small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .main {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .hero,
+    .viewer {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 26px;
+    }
+
+    .hero h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 900px;
+    }
+
+    .viewer {
+      overflow: hidden;
+    }
+
+    .viewer-inner {
+      display: grid;
+      grid-template-columns: minmax(320px, 1.2fr) minmax(280px, 0.8fr);
+      min-height: 70vh;
+    }
+
+    .image-wrap {
+      position: relative;
+      background: #020617;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+    }
+
+    .image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-badge {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      backdrop-filter: blur(8px);
+    }
+
+    .content {
+      padding: 24px;
+      background: var(--panel-2);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      background: rgba(34, 197, 94, 0.14);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    .content h3 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .content .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .section-title {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    .meaning,
+    .details {
+      margin: 0;
+      line-height: 1.8;
+      color: #dbe7f8;
+      font-size: 15px;
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nav-row button {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .nav-row button:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    @media (max-width: 960px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      .viewer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .image-wrap {
+        min-height: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>Te Rimu Story</h1>
+      <!--故事展示-->
+      <p>
+        <!--
+        左侧这 8 个关键词会始终固定在这里。点击任意关键词，就会在右侧打开对应图片和说明。
+        -->
+      </p>
+      <div class="keyword-list" id="keywordList"></div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <h2>Te Rimu the Taniwha</h2>
+        <p>
+          <!--
+          这是一个交互式故事展示页面。你可以用它来展示人物、关键事件和对应图片。
+          目前默认放入 8 个关键事件。你只需要把代码中的图片路径替换成你自己的图片文件名即可。
+          -->
+        </p>
+      </section>
+
+      <section class="viewer">
+        <div class="viewer-inner">
+          <div class="image-wrap">
+            <img id="storyImage" src="" alt="故事图片" />
+            <div class="image-badge" id="imageBadge">Event Image</div>
+          </div>
+
+          <div class="content">
+            <span class="tag" id="storyTag">Event</span>
+            <h3 id="storyTitle"></h3>
+            <p class="subtitle" id="storySubtitle"></p>
+
+            <h4 class="section-title">Event Description</h4>
+            <p class="details" id="storyDetails"></p>
+
+            <h4 class="section-title">Meaning</h4>
+            <p class="meaning" id="storyMeaning"></p>
+
+            <div class="nav-row">
+              <button id="prevBtn">Previous</button>
+              <button id="nextBtn">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = [
+  {
+    keyword: '1. Appearance',
+    short: 'Te Rimu appears in the river',
+    type: 'Event',
+    title: 'Te Rimu Appears in the River',
+    subtitle: 'Nature is mysterious and alive',
+    details: 'Te Rimu moves in the deep river, sometimes looking like a floating log, sometimes like a giant eel.',
+    meaning: 'This shows that nature is not just background, but something alive and powerful.',
+    image: 'images/event1-te-rimu-appears.png',
+    badge: 'Event 1'
+  },
+  {
+    keyword: '2. Discovery',
+    short: 'Aroha notices something strange',
+    type: 'Event',
+    title: 'Aroha Discovers the Moving Log',
+    subtitle: 'Humans begin to notice nature',
+    details: 'A person sits by the river and notices that a floating log seems to move and watch them.',
+    meaning: 'This represents human awareness of nature.',
+    image: 'images/event2-aroha-discovers-log.png',
+    badge: 'Event 2'
+  },
+  {
+    keyword: '3. Transformation',
+    short: 'Log becomes taniwha',
+    type: 'Event',
+    title: 'Te Rimu Reveals Its True Form',
+    subtitle: 'Nature is powerful and cannot be ignored',
+    details: 'The floating log transforms into a giant eel-like taniwha emerging from the river.',
+    meaning: 'This shows the strength and power of nature.',
+    image: 'images/event3-transformation.png',
+    badge: 'Event 3'
+  },
+  {
+    keyword: '4. Warning',
+    short: 'The river and I are one',
+    type: 'Event',
+    title: 'Te Rimu Gives a Warning',
+    subtitle: 'Pollution harms nature',
+    details: 'Te Rimu emerges from polluted water and asks humans for help, saying “The river and I are one”.',
+    meaning: 'Nature and life are connected. Pollution harms nature directly.',
+    image: 'images/event4-warning.png',
+    badge: 'Event 4'
+  },
+  {
+    keyword: '5. Destruction',
+    short: 'River becomes polluted',
+    type: 'Event',
+    title: 'Environmental Damage',
+    subtitle: 'Humans damage nature',
+    details: 'The river is filled with trash, muddy banks, and signs of deforestation and landslides.',
+    meaning: 'This shows the impact of human activity on nature.',
+    image: 'images/event5-pollution.png',
+    badge: 'Event 5'
+  },
+  {
+    keyword: '6. Leadership',
+    short: 'A leader takes action',
+    type: 'Event',
+    title: 'Tawa Leads the Action',
+    subtitle: 'Humans take responsibility',
+    details: 'Tawa organizes the community to clean the river and protect the environment.',
+    meaning: 'This represents leadership and responsibility.',
+    image: 'images/event6-tawa-leads.png',
+    badge: 'Event 6'
+  },
+  {
+    keyword: '7. Community Action',
+    short: 'People work together',
+    type: 'Event',
+    title: 'Community Cleans the River',
+    subtitle: 'Collective responsibility',
+    details: 'People wear safety gear and work together to remove trash from the river.',
+    meaning: 'Protecting nature is a shared responsibility.',
+    image: 'images/event7-community-cleanup.png',
+    badge: 'Event 7'
+  },
+  {
+    keyword: '8. Restoration',
+    short: 'Harmony restored',
+    type: 'Event',
+    title: 'River Restored, Te Rimu Watches',
+    subtitle: 'Humans and nature in harmony',
+    details: 'The river becomes clean again, the forest is peaceful, and Te Rimu continues to guard the land.',
+    meaning: 'This shows hope and harmony between humans and nature.',
+    image: 'images/event8-restoration.png',
+    badge: 'Event 8'
+  }
+];
+
+    const keywordList = document.getElementById('keywordList');
+    const storyImage = document.getElementById('storyImage');
+    const storyTag = document.getElementById('storyTag');
+    const storyTitle = document.getElementById('storyTitle');
+    const storySubtitle = document.getElementById('storySubtitle');
+    const storyDetails = document.getElementById('storyDetails');
+    const storyMeaning = document.getElementById('storyMeaning');
+    const imageBadge = document.getElementById('imageBadge');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentIndex = 0;
+
+    function renderKeywords() {
+      keywordList.innerHTML = '';
+      items.forEach((item, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'keyword-btn';
+        if (index === currentIndex) btn.classList.add('active');
+        btn.innerHTML = `${item.keyword}<small>${item.short}</small>`;
+        btn.addEventListener('click', () => showItem(index));
+        keywordList.appendChild(btn);
+      });
+    }
+
+    function showItem(index) {
+      currentIndex = index;
+      const item = items[index];
+      storyImage.src = item.image;
+      storyImage.alt = item.title;
+      storyTag.textContent = item.type;
+      storyTitle.textContent = item.title;
+      storySubtitle.textContent = item.subtitle;
+      storyDetails.textContent = item.details;
+      storyMeaning.textContent = item.meaning;
+      imageBadge.textContent = item.badge;
+      renderKeywords();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      const nextIndex = (currentIndex - 1 + items.length) % items.length;
+      showItem(nextIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const nextIndex = (currentIndex + 1) % items.length;
+      showItem(nextIndex);
+    });
+
+    showItem(0);
+  </script>
+</body>
+</html>
